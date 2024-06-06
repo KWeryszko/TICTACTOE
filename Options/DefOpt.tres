@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="Options" load_steps=2 format=3 uid="uid://ds1xnpgt6bj74"]
+
+[ext_resource type="Script" path="res://Options/Options.cs" id="1_w3olg"]
+
+[resource]
+script = ExtResource("1_w3olg")
+AiOpponent = false

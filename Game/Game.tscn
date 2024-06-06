@@ -1,6 +1,37 @@
-[gd_scene load_steps=2 format=3 uid="uid://dbss37kus1fkr"]
+[gd_scene load_steps=3 format=3 uid="uid://dbss37kus1fkr"]
 
 [ext_resource type="Script" path="res://Game/Game.cs" id="1_eh3aa"]
+[ext_resource type="Texture2D" uid="uid://c32ebjhbel7ht" path="res://Resources/background.png" id="2_c0wus"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_eh3aa")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TextureRect" type="TextureRect" parent="Control"]
+layout_mode = 0
+offset_left = -100.0
+offset_top = -100.0
+offset_right = 1400.0
+offset_bottom = 960.0
+texture = ExtResource("2_c0wus")
+
+[node name="Retry" type="Button" parent="Control"]
+layout_mode = 0
+offset_left = 240.0
+offset_top = 550.0
+offset_right = 440.0
+offset_bottom = 600.0
+text = "PLAY AGAIN"
+
+[node name="Menu" type="Button" parent="Control"]
+layout_mode = 0
+offset_left = 752.0
+offset_top = 550.0
+offset_right = 952.0
+offset_bottom = 600.0
+text = "RETURN TO MENU"
