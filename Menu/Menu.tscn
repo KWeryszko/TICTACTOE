@@ -24,27 +24,27 @@ offset_left = 150.0
 offset_top = 260.0
 offset_right = 400.0
 offset_bottom = 330.0
-text = "zagraj z innym graczem"
+text = "play versus player"
 
 [node name="PvE" type="Button" parent="."]
 offset_left = 451.0
 offset_top = 260.0
 offset_right = 701.0
 offset_bottom = 330.0
-text = "zagraj z komputerem"
+text = "play versus computer"
 
 [node name="Exit" type="Button" parent="."]
 offset_left = 752.0
 offset_top = 260.0
 offset_right = 1002.0
 offset_bottom = 330.0
-text = "wyjdź"
+text = "exit the game"
 
 [node name="Label" type="Label" parent="."]
 offset_right = 1152.0
 offset_bottom = 200.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 100
-text = "TicTakToe"
+text = "TicTacToe"
 horizontal_alignment = 1
 vertical_alignment = 1

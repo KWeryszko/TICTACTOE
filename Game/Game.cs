@@ -37,6 +37,11 @@ public partial class Game : Node2D
         controlButtons[1] = GetChild(0).GetChild<Button>(2);//menu
         controlButtons[1].ButtonDown += MenuButtonClick; ;
         controlButtons[1].Visible = false;
+        //turnLabel\\
+        turnLabel = GetChild(0).GetChild<Label>(3);
+        turnLabel.Text = "Turn of player 1, player is playing X";
+        //creating ai if Aiopponent is chosen\\
+        if (_options.AiOpponent) ai = new Ai();
     }
     private void setTile(int positionX, int positionY)
     {
@@ -46,17 +51,23 @@ public partial class Game : Node2D
         {
             buttons[positionX + positionY * 3].TextureNormal = Xtext;
             tempText = 'X';
+            turnLabel.Text = "Turn of player 2, player is playing O";
         }
         else
         {
             buttons[positionX + positionY * 3].TextureNormal = Ytext;
             tempText = 'O';
+            turnLabel.Text = "Turn of player 1, player is playing X";
         }
+        buttons[positionX + positionY * 3].setOccupied();
         buttons[positionX + positionY * 3].Disabled = true;
+        
+
         if (gameOver = CheckVictory())
         {
-            GenerateLabel("WYGRANA " + tempText + " !");
-            foreach(var button in buttons)
+            GenerateLabel(tempText + " Won!");
+            turnLabel.Visible = false;
+            foreach (var button in buttons)
             {
                 button.Disabled = true;
             }
@@ -65,7 +76,9 @@ public partial class Game : Node2D
         }
         else if (turnCounter == 9)
         {
-            GenerateLabel("Remis!");
+            gameOver = true;
+            GenerateLabel("Draw!");
+            turnLabel.Visible = false;
             foreach (var button in buttons)
             {
                 button.Disabled = true;
@@ -73,9 +86,63 @@ public partial class Game : Node2D
             controlButtons[0].Visible = true;
             controlButtons[1].Visible = true;
         }
-        
+
         turn = !turn;
+        if (_options.AiOpponent && !gameOver)
+        {
+            AiTurn();
+            turn = !turn;
+        }
+
         
+        
+        
+    }
+    private void AiTurn()
+    {
+        int positionChosenByAi = ai.ChooseTile(buttons.ToArray());
+        GD.Print(positionChosenByAi.ToString());
+        char tempText;
+        turnCounter++;
+        if (turn)
+        {
+            buttons[positionChosenByAi].TextureNormal = Xtext;
+            tempText = 'X';
+            turnLabel.Text = "Turn of player 2, player is playing O";
+        }
+        else
+        {
+            buttons[positionChosenByAi].TextureNormal = Ytext;
+            tempText = 'O';
+            turnLabel.Text = "Turn of player 1, player is playing X";
+        }
+        buttons[positionChosenByAi].setOccupied();
+        buttons[positionChosenByAi].Disabled = true;
+        
+
+        if (gameOver = CheckVictory())
+        {
+            GenerateLabel(tempText + " Won!");
+            turnLabel.Visible = false;
+            foreach (var button in buttons)
+            {
+                button.Disabled = true;
+            }
+            controlButtons[0].Visible = true;
+            controlButtons[1].Visible = true;
+        }
+        else if (turnCounter == 9)
+        {
+            GenerateLabel("Draw!");
+            turnLabel.Visible = false;
+            foreach (var button in buttons)
+            {
+                button.Disabled = true;
+            }
+            controlButtons[0].Visible = true;
+            controlButtons[1].Visible = true;
+        }
+
     }
     private void GenerateLabel(string labelText)
     {
@@ -90,19 +157,19 @@ public partial class Game : Node2D
     }
     private bool CheckVictory()
     {
-        if (buttons[0].TextureNormal != normal)
+        if (buttons[0].Occupied())
         {
             if (buttons[0].TextureNormal == buttons[1].TextureNormal && buttons[0].TextureNormal == buttons[2].TextureNormal) { return true; }
             if (buttons[0].TextureNormal == buttons[3].TextureNormal && buttons[0].TextureNormal == buttons[6].TextureNormal) { return true; }
             if (buttons[0].TextureNormal == buttons[4].TextureNormal && buttons[0].TextureNormal == buttons[8].TextureNormal) { return true; }
         }
-        if (buttons[4].TextureNormal != normal)
+        if (buttons[4].Occupied())
         {
             if (buttons[4].TextureNormal == buttons[2].TextureNormal && buttons[4].TextureNormal == buttons[6].TextureNormal) { return true; }
             if (buttons[4].TextureNormal == buttons[1].TextureNormal && buttons[4].TextureNormal == buttons[7].TextureNormal) { return true; }
             if (buttons[4].TextureNormal == buttons[3].TextureNormal && buttons[4].TextureNormal == buttons[5].TextureNormal) { return true; }
         }
-        if (buttons[8].TextureNormal != normal)
+        if (buttons[8].Occupied())
         {
             if (buttons[8].TextureNormal == buttons[2].TextureNormal && buttons[8].TextureNormal == buttons[5].TextureNormal) { return true; }
             if (buttons[8].TextureNormal == buttons[6].TextureNormal && buttons[8].TextureNormal == buttons[7].TextureNormal) { return true; }
@@ -125,5 +192,7 @@ public partial class Game : Node2D
     private List<TileButton> buttons = new(0);
     private Button[] controlButtons = new Button[2];
     private TextureRect grid = new();
+    private Label turnLabel;
     private Options _options = GD.Load<Options>("res://Options/DefOpt.tres");
+    private Ai ai;
 }

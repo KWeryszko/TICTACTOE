@@ -16,5 +16,8 @@ public partial class TileButton : TextureButton
         positionX = x;
         positionY = y;
     }
+    public bool Occupied() { return occupied; }
+    public void setOccupied() {  occupied = true; }
     private int positionX, positionY;
+    private bool occupied=false;
 }
